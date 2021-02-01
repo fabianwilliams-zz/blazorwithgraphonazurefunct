@@ -1,0 +1,28 @@
+﻿@page "/getallusers"
+@inject HttpClient Http
+
+<h1>Get All My Users in my Graph via FabsContoso Tenant</h1>
+
+<p>This component demonstrates fetching data using Microsoft Graph via an Azure Function</p>
+
+@if (message == null)
+{
+    <p><em>Loading all graph users...</em></p>
+}
+else
+{
+    <p>@message </p>
+}
+
+@functions {
+    string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //no Try Catch because we are Cowboys :-)
+        //message = await Http.GetStringAsync("http://localhost:7071/api/GetUserFromMSGraphOne");
+        message = await Http.GetStringAsync("https://fabsgraphmailbagalpha.azurewebsites.net/api/GetAllUsers?code=REDACTED");
+
+    }
+
+}

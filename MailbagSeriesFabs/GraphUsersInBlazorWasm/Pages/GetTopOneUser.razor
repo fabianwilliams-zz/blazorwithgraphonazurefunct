@@ -1,0 +1,28 @@
+﻿@page "/gettoponeuser"
+@inject HttpClient Http
+
+<h1>Get the 1st user in my Graph via FabsContoso Tenant</h1>
+
+<p>This component demonstrates fetching data using Microsoft Graph via an Azure Function</p>
+
+@if (message == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p> Top user is: @message </p>
+}
+
+@functions {
+    string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //no Try Catch because we are Cowboys :-)
+        //message = await Http.GetStringAsync("http://localhost:7071/api/GetUserFromMSGraphOne");
+        message = await Http.GetStringAsync("https://fabsgraphmailbagalpha.azurewebsites.net/api/GetTopOneUser?code=REDACTED");
+
+    }
+
+}
