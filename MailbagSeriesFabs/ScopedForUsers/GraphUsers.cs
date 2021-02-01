@@ -20,7 +20,7 @@ namespace ScopedForUsers
 
         [FunctionName("GetTopOneUser")]
         public static async Task<IActionResult> GetTopOneUserFromGraph(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
 
@@ -44,7 +44,7 @@ namespace ScopedForUsers
 
         [FunctionName("GetAllUsers")]
         public static async Task<IActionResult> GetAllUsersFromGraph(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             List<FabsterUser> ful = new List<FabsterUser>();
@@ -58,8 +58,6 @@ namespace ScopedForUsers
             var graphResult = graphClient.Users.Request(options).GetAsync().Result;
 
             List<User> usersList = graphResult.CurrentPage.ToList();
-
-            var counter = usersList.Count;
 
             foreach (User u in usersList)
             {
@@ -76,6 +74,9 @@ namespace ScopedForUsers
         }
         private static GraphServiceClient GetAuthenticatedGrahClient()
         {
+            //The below comment block is how you should go about securing your configurable keys etc as it will allow you to 
+            // send them to Azure API settings upon publish as well as set them up for KeyValult. but you dont 
+            //get to eee my local.settings.json file so I have it here direct as well uncommented so you can see options.
             /*
             var clientId = Environment.GetEnvironmentVariable("AzureADAppClientId", EnvironmentVariableTarget.Process);
             var tenantID = Environment.GetEnvironmentVariable("AzureADAppTenantId", EnvironmentVariableTarget.Process);
